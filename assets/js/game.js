@@ -151,9 +151,26 @@ var randomNumber = function(min,max){
   return value;
 };
 
+
+//last step for lesson 3, to not accept invalid data, like blanks/null, prompt the play until data is recieved, function to set name
+var getPlayerName = function() {
+  var name = "";    //need this "" before the while loop to guarantee the enring the loop, at least a prompt from the player was entered
+
+  //add loop here
+while(name === "" || name === null){     //prompting that a name was not entered or just null, will repeat until something is entered.
+  name = prompt("What is your robot's name?");
+}  
+
+  console.log("Your robot's name is " + name);
+  return name;
+};
+
+
+
+
 //placed at the bottom, so the calculation with random health/range can be used above for the var enemyinfo, so it can all generate.
 var playerInfo = {
-  name: window.prompt("What is your robot's name?"),
+  name: getPlayerName(),  //stored the name that was entered
   health: 100,
   attack: 10,
   money: 10,
