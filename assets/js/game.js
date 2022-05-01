@@ -22,15 +22,17 @@ var fight = function(enemyName) {
       // if yes (true), leave fight
       if (confirmSkip) {
         window.alert(playerName + ' has decided to skip this fight. Goodbye!');
-        // subtract money from playerMoney for skipping
-        playerMoney = playerMoney - 10;
+        // subtract money from playerMoney for skipping, formula all the way at the bottom
+        playerMoney = Math.max(playerMoney - 10);
         console.log("playerMoney", playerMoney)
         break;
       }
     }
-
-    // remove enemy's health by subtracting the amount set in the playerAttack variable
-    enemyHealth = enemyHealth - playerAttack;
+      //generate random damage value based on player's attack power
+      var damage = randomNumber(playerAttack - 3, playerAttack);
+      
+    // remove enemy's health by subtracting the amount set in the playerAttack variable, we ensure that it will stop at 0.  formula is all the way at the bottom
+    enemyHealth = Math.max(0,enemyHealth - damage);
     console.log(
       playerName + ' attacked ' + enemyName + '. ' + enemyName + ' now has ' + enemyHealth + ' health remaining.'
     );
@@ -47,9 +49,11 @@ var fight = function(enemyName) {
     } else {
       window.alert(enemyName + ' still has ' + enemyHealth + ' health left.');
     }
+    //random damage from enemy attack
+    var damage = randomNumber(enemyAttack -3, enemyAttack);
 
-    // remove players's health by subtracting the amount set in the enemyAttack variable
-    playerHealth = playerHealth - enemyAttack;
+    // remove players's health by subtracting the amount set in the enemyAttack variable, gives a random damage, formula all the way at the bottom
+    playerHealth = Math.max(0,playerHealth - damage);
     console.log(
       enemyName + ' attacked ' + playerName + '. ' + playerName + ' now has ' + playerHealth + ' health remaining.'
     );
@@ -72,6 +76,7 @@ var startGame = function() {
   playerAttack = 10;
   playerMoney = 10;
 
+
   // fight each enemy robot by looping over them and fighting them one at a time
   for (var i = 0; i < enemyNames.length; i++) {
     // if player is still alive, keep fighting
@@ -82,8 +87,8 @@ var startGame = function() {
       // pick new enemy to fight based on the index of the enemyNames array
       var pickedEnemyName = enemyNames[i];
 
-      // reset enemyHealth before starting new fight
-      enemyHealth = 50;
+      // reset enemyHealth before starting new fight.  inside the () is health of 0-20 but that additional 40 makes it that at least health will be min 40 and max of 60
+      enemyHealth = randomNumber(40,60);
 
       // pass the pickedEnemyName variable's value into the fight function, where it will assume the value of the enemyName parameter
       fight(pickedEnemyName);
@@ -179,6 +184,12 @@ var shop = function() {
       shop();
       break;
   }
+};
+
+//sets that random health or value within a range, helps with the math
+var randomNumber = function(min,max){
+  var value = Math.floor(Math.random() *(max-min +1) + min);
+  return value;
 };
 
 // start first game when page loads
